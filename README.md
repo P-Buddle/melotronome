@@ -13,4 +13,4 @@ I will create an attractive GUI once I am happy with the functionality of the ap
 
 The program is functional but once sound generation has started, tempo and time signature can't be edited until sound has been stopped, reducing fluidity of usage. 
 
-
+I am still learning the prefered format of python in terms of spacing and comments, but have attempted to make the code as readable as possible.
