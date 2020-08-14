@@ -1,0 +1,73 @@
+<Button>:
+    font_size: 10
+    colour: 0.3, 0.6, 0.7, 1
+    size_hint: 0.1, 0.1
+
+<FloatLayout>:
+
+    Slider:
+        pos_hint: {"top":1}
+        id: slider1
+        min: 50
+        max: 250
+        value: 120
+        step: 1
+        orientation: 'horizontal'
+        on_value:label1.text = str(int(self.value))
+
+    Label:
+        id: label1
+        font_size: "30sp"
+        text: "120"
+        color: 1, 1, 1, 1
+
+
+
+    Button:
+        id: btn1
+        pos_hint: {"x": 0.2 , "top":0.8}
+        text:"Start 3"
+        on_press: app.seq_play(3, 64, slider1.value)
+
+    Button:
+        id: btn2
+        pos_hint: {"x": 0.3 , "top":0.8}
+        text:"Start 4"
+        on_press: app.seq_play(4, 64, slider1.value)
+
+    Button:
+        id: btn3
+        pos_hint: {"x": 0.4 , "top":0.8}
+        text:"Start 5"
+        on_press: app.seq_play(5, 64, slider1.value)
+
+    Button:
+        id: btn4
+        pos_hint: {"x": 0.5 , "top":0.8}
+        text:"Start 6"
+        on_press: app.seq_play(6, 64, slider1.value)
+
+    Button:
+        id: btn5
+        pos_hint: {"x": 0.6 , "top":0.8}
+        text:"Start 7"
+        on_press: app.seq_play(7, 64, slider1.value)
+
+    Button:
+        id: btn6
+        pos_hint: {"x": 0.7 , "top":0.8}
+        text:"Start 8"
+        on_press: app.seq_play(8, 64, slider1.value)
+
+    Button:
+        id: btn7
+        pos_hint: {"x": 0.8 , "top":0.8}
+        text:"Start 9"
+        on_press: app.seq_play(9, 64, slider1.value)
+
+    Button:
+        id: btnstop
+        pos_hint: {"x": 0.4 , "top":0.2}
+        size_hint: 0.2, 0.2
+        text:"STOP" if btnstop.state == "normal" else "STOPPING"
+        on_press:app.seq_stop()
