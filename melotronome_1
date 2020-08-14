@@ -1,0 +1,109 @@
+import kivy
+import random
+from kivy.app import App
+from kivy.uix.widget import Widget
+from kivy.uix.floatlayout import FloatLayout
+from kivy.properties import ObjectProperty
+from kivy.clock import Clock
+from functools import partial
+import pygame.midi
+
+
+pygame.midi.init()
+player = pygame.midi.Output(0) #set output to pygames output
+player.set_instrument(13) #set instrument - create user variable?
+##issues arise with certain instruments such as sustained notes that don't decay once melody has stopped.
+
+#MUSICAL CONTENT
+#midi notes - a random selection is added to the empty notelist on initialisation of seq_play 
+scale = [64, 66, 67, 69, 71, 72, 74, 76, 78, 79, 81, 83, 84, 86, 88] 
+note_list = []
+counter = 1
+
+def play_notes(timesig, rootnote, dt):  
+    """using the counter, notes from the notelist are played"""
+    global counter
+    print(counter)
+
+    if counter == 1:
+        player.note_on(rootnote, 100, 0)
+    if counter == 2:
+        player.note_on(note_list[1], 100, 0)
+    if counter == 3:
+        player.note_on(note_list[2], 100, 0)
+    if counter == 4:
+        player.note_on(note_list[3], 100, 0)
+    if counter == 5:
+        player.note_on(note_list[4], 100, 0)
+    if counter == 6:
+        player.note_on(note_list[5], 100, 0)
+    if counter == 7:
+        player.note_on(note_list[6], 100, 0)
+    if counter == 8:
+        player.note_on(note_list[7], 100, 0)
+    if counter == 9:
+        player.note_on(note_list[8], 100, 0)
+    if counter == 10:
+        player.note_on(note_list[9], 100, 0)
+    if counter == 11:
+        player.note_on(note_list[10], 100, 0)
+        
+#counter
+    """as notes are played the counter rises until it reaches the maximum (assigned by timesig) then it resets, this allows correct number of notes to be played"""
+    if counter < timesig:
+        counter +=1
+    else: counter = 1
+    return counter
+
+class MyApp(App):
+    def build(self):
+        return FloatLayout()
+
+    global running
+    running = 1
+
+    def seq_play(self, timesig, root, bpm):
+        """'running', prevents function from being called once its already called,
+        delay is the speed of notes (an eighth note at the set bpm),
+        the event is the scheduling of each notes assigned by the kwargs,
+        notes from the scale are added to the empty note list at random"""
+        
+        global event, running
+        
+        delay = 30/bpm
+        
+        if running == 1:
+            event = Clock.schedule_interval(partial(play_notes, timesig, root), delay)
+            running += 1
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+            note_list.append(random.choice(scale))
+
+            print(note_list) #debugger to check which notes added
+        else: pass
+
+    def seq_stop(self):
+        """this stops the function from running by cancelling the event, and clearing the notelist
+        which allows a new set of notes to be added on the next call of seq_play"""
+        
+        global counter, running
+        if running == 2:
+            event.cancel()
+            counter = 1
+            running -= 1
+            note_list.clear()
+        else: pass
+
+if __name__ == "__main__":
+    MyApp().run()
+
+del player
+pygame.midi.quit()
